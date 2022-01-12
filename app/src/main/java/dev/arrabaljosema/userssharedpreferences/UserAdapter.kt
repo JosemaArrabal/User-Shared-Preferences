@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import dev.arrabaljosema.userssharedpreferences.databinding.ItemUserBinding
 
 //Se  especifica el tipo y por otra parte se debe extender de la clase viewHolder
@@ -25,8 +27,16 @@ class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdap
         val user = users.get(position)
 
         with(holder) {
-            binding.tvOrder.text = user.id.toString()
-            binding.tvName.text = user.name
+            binding.tvOrder.text = (position + 1).toString()
+            binding.tvName.text = user.getFullname()
+
+            // Glide para el adaptador
+            Glide.with(context)
+                .load(user.url) // Carga de la url
+                .diskCacheStrategy(DiskCacheStrategy.ALL) // Caché
+                .centerCrop()
+                .circleCrop() // Función para que la imagen sea redonda
+                .into(binding.imgPhoto) // Conexión con el imageView del item_user.xml
         }
     }
 
