@@ -9,9 +9,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import dev.arrabaljosema.userssharedpreferences.databinding.ItemUserBinding
 
-//Se  especifica el tipo y por otra parte se debe extender de la clase viewHolder
+// Se especifica el tipo y por otra parte se debe extender de la clase viewHolder
 // (inner clase interna). Recibe vista de tipo view y hereda de RecyclerView.
-class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
+// 2º paso en la interface, se añade la propiedad val listener y se le especifica el tipo
+class UserAdapter(private val users: List<User>, private val listener: OnClickListener) :
+    RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
     private lateinit var context: Context
 
@@ -27,6 +29,8 @@ class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdap
         val user = users.get(position)
 
         with(holder) {
+            // 5º Interface, llamada a la función
+            setListener(user, position)
             binding.tvOrder.text = (position + 1).toString()
             binding.tvName.text = user.getFullname()
 
@@ -44,5 +48,11 @@ class UserAdapter(private val users: List<User>) : RecyclerView.Adapter<UserAdap
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ItemUserBinding.bind(view)
+
+        // 3er paso de la interface, se crea un nuevo método
+        // 4º se llama a la función desde dentro del with
+        fun setListener(user: User, position: Int) {
+            binding.root.setOnClickListener { listener.onClick(user, position) }
+        }
     }
 }
