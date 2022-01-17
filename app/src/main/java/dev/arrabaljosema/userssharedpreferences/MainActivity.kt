@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
                 .setPositiveButton(R.string.dialog_confirm, { dialogInterface, i ->
                     preferences.edit().putBoolean(getString(R.string.sp_first_time), false).commit()
                 })
+                .setNegativeButton("Cancelar", null)
                 .show()
         }
 
