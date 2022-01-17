@@ -48,6 +48,12 @@ class MainActivity : AppCompatActivity(), OnClickListener {
                     }
                 })
                 .show()
+        } else {
+            val username = preferences.getString(
+                getString(R.string.sp_username),
+                getString(R.string.hint_username)
+            )
+            Toast.makeText(this, "Bienvenido $username", Toast.LENGTH_SHORT).show()
         }
 
         // 2ª se pasa por el adaptador
