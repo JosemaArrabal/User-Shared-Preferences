@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import dev.arrabaljosema.userssharedpreferences.databinding.ActivityMainBinding
 
 // 6º paso de la interface, se implementa en esta clase
@@ -31,12 +32,21 @@ class MainActivity : AppCompatActivity(), OnClickListener {
 
         // 2º paso SP
         if (isFirstTime) {
+            val dialogView = layoutInflater.inflate(R.layout.dialog_register, null)
             MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.dialog_title)
+                .setView(dialogView)
+                .setCancelable(false)
                 .setPositiveButton(R.string.dialog_confirm, { dialogInterface, i ->
-                    preferences.edit().putBoolean(getString(R.string.sp_first_time), false).commit()
+                    val username = dialogView.findViewById<TextInputEditText>(R.id.etUsername)
+                        .text
+                        .toString()
+                    with(preferences.edit()) {
+                        putBoolean(getString(R.string.sp_first_time), false)
+                        putString(getString(R.string.sp_username), username)
+                            .apply()
+                    }
                 })
-                .setNegativeButton("Cancelar", null)
                 .show()
         }
 
